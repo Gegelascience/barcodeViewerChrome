@@ -1,0 +1,10 @@
+.btn{
+    margin-left: 5px;
+    background-color: lightgoldenrodyellow;
+}
+
+.formContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
