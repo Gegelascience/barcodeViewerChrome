@@ -1,0 +1,15 @@
+.informationContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#myCanvas {
+    flex:1
+}
+
+#eanValue {
+    flex:1;
+    font-size: 3em;
+}

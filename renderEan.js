@@ -45,13 +45,17 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 
 var ean =params.ean
 
+const eanText = document.getElementById("eanValue")
+
+eanText.innerText = ean
+
 const canvas = document.getElementById('myCanvas');
 if (canvas.getContext) {
     const ctx = canvas.getContext('2d');
     const barcodeValue = calculateBarCodeValue(ean)
     for (let index = 0; index < barcodeValue.length; index++) {
         if (barcodeValue[index] == "1") {
-            drawLine(ctx, [100 + 5*index, 100], [100 + 5*index, 300], 'green', 5);
+            drawLine(ctx, [25 + 5*index, 100], [25 + 5*index, 300], "black", 5);
         }
     }
     
