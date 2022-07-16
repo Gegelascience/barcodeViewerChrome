@@ -4,12 +4,12 @@ var btn = document.getElementById("showEan")
 btn.addEventListener("click", () => {
   
   var inputValue = document.getElementById("ean").value
-  if(inputValue.length == 13 && isCorrectEan(inputValue)) {
+  if((inputValue.length == 13 || inputValue.length == 8) && isCorrectEan(inputValue)) {
     chrome.tabs.create({
       url: 'renderEan.html?ean=' + inputValue
     });
   } else {
-    alert(inputValue + " isn't an ean13")
+    alert(inputValue + " isn't an ean13 or ean8")
   }
 })
 
@@ -21,7 +21,7 @@ function isCorrectEan(inputValue) {
         
   var testLen = inputValue.length
 
-  if (testLen != 13){
+  if (testLen != 13 && testLen != 8){
     return false
   }
 
@@ -29,13 +29,13 @@ function isCorrectEan(inputValue) {
     return false
   }
 
-    var eanDigitLess = inputValue.slice(0,testLen-1)
-    var possibleDigitCheck = inputValue[testLen-1]
-    if (possibleDigitCheck != calculateDigitCheck(eanDigitLess)){
-        return false
-    }
+  var eanDigitLess = inputValue.slice(0,testLen-1)
+  var possibleDigitCheck = inputValue[testLen-1]
+  if (possibleDigitCheck != calculateDigitCheck(eanDigitLess)){
+      return false
+  }
             
-    return true
+  return true
   
 }
 

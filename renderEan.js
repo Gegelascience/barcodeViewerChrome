@@ -82,16 +82,29 @@ function calculateBarCodeValue(eanValue) {
 
     var prefix = eanValue[0]
 
-    var firstPartRaw = eanValue.substring(1,7)
-    var lastPartRaw = eanValue.substring(7)
+    if (eanValue.length == 13){
+        var firstPartRaw = eanValue.substring(1,7)
+        var lastPartRaw = eanValue.substring(7)
+    } else if (eanValue.length == 8) {
+        var firstPartRaw = eanValue.substring(1,5)
+        var lastPartRaw = eanValue.substring(5)
+    } else {
+        return ""
+    }
+    
 
     for (let index = 0; index < firstPartRaw.length; index++) {
-        setToApply = findSetByPrefixAndIndex(prefix,index)
-        if (setToApply == "A") {
-            barcodeValue = barcodeValue + setA[firstPartRaw[index]]
+        if (firstPartRaw.length == 6){
+            setToApply = findSetByPrefixAndIndex(prefix,index)
+            if (setToApply == "A") {
+                barcodeValue = barcodeValue + setA[firstPartRaw[index]]
+            } else {
+                barcodeValue = barcodeValue + setB[firstPartRaw[index]]
+            }
         } else {
-            barcodeValue = barcodeValue + setB[firstPartRaw[index]]
+            barcodeValue = barcodeValue + setA[firstPartRaw[index]]
         }
+        
     }
 
     barcodeValue = barcodeValue + "01010"
