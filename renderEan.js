@@ -45,9 +45,9 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 
 var ean =params.ean
 
-const eanText = document.getElementById("eanValue")
+//const eanText = document.getElementById("eanValue")
 
-eanText.innerText = ean
+//eanText.innerText = ean
 
 const canvas = document.getElementById('myCanvas');
 if (canvas.getContext) {
@@ -58,10 +58,34 @@ if (canvas.getContext) {
         if (barcodeValue[index] == "1" && mask[index] == "0") {
             drawLine(ctx, [25 + 5*index, 100], [25 + 5*index, 300], "black", 5);
         } else if (barcodeValue[index] == "1" && mask[index] == "1"){
-            drawLine(ctx, [25 + 5*index, 100], [25 + 5*index, 400], "black", 5);
+            drawLine(ctx, [25 + 5*index, 100], [25 + 5*index, 350], "black", 5);
         }
     }
+    ctx.font = '48px serif'; 
+    var firstPart = ean.substring(0,4)
+    var secondPart = ean.substring(4)
+    var partLen = 4
+    if (ean.length == 13) {
+        ctx.fillText(ean[0], 0,350)
+        firstPart = ean.substring(1,7)
+        secondPart = ean.substring(7)
+        partLen = 6
+    }
+    for (let index = 0; index < firstPart.length; index++) {
+        ctx.fillText(firstPart[index], 40 + index*35,350)
+    }
+
+    for (let index = 0; index < secondPart.length; index++) {
+        ctx.fillText(secondPart[index], 40 + 25 + partLen*5*7 + index*35,350)
+    }
+
     
+    
+    
+}
+
+function drawSubText(ctx, text, x, y) {
+    ctx.fillText(text, x,y)
 }
 
 
