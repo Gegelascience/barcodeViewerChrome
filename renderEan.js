@@ -53,9 +53,12 @@ const canvas = document.getElementById('myCanvas');
 if (canvas.getContext) {
     const ctx = canvas.getContext('2d');
     const barcodeValue = calculateBarCodeValue(ean)
+    const mask = getMaskStyle(ean)
     for (let index = 0; index < barcodeValue.length; index++) {
-        if (barcodeValue[index] == "1") {
+        if (barcodeValue[index] == "1" && mask[index] == "0") {
             drawLine(ctx, [25 + 5*index, 100], [25 + 5*index, 300], "black", 5);
+        } else if (barcodeValue[index] == "1" && mask[index] == "1"){
+            drawLine(ctx, [25 + 5*index, 100], [25 + 5*index, 400], "black", 5);
         }
     }
     
@@ -86,8 +89,8 @@ function calculateBarCodeValue(eanValue) {
         var firstPartRaw = eanValue.substring(1,7)
         var lastPartRaw = eanValue.substring(7)
     } else if (eanValue.length == 8) {
-        var firstPartRaw = eanValue.substring(1,5)
-        var lastPartRaw = eanValue.substring(5)
+        var firstPartRaw = eanValue.substring(0,4)
+        var lastPartRaw = eanValue.substring(4)
     } else {
         return ""
     }
@@ -161,4 +164,32 @@ function findSetByPrefixAndIndex(prefix,index) {
     
     }
             
+}
+
+function getMaskStyle(eanValue) {
+    var styleMask ="111"
+
+    if (eanValue.length == 13){
+        var numberOfValue = 6
+
+     } else if (eanValue.length == 8) {
+        var numberOfValue = 4
+
+    } else {
+        return ""
+    }
+
+    for (let index = 0; index < numberOfValue; index++) {
+        styleMask = styleMask +"0000000"
+    }
+
+    styleMask = styleMask +"11111"
+
+    for (let index = 0; index < numberOfValue; index++) {
+        styleMask = styleMask +"0000000"
+    }
+
+    styleMask = styleMask +"111"
+
+    return styleMask
 }
