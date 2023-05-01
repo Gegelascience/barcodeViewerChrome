@@ -86,7 +86,7 @@ btn.addEventListener("click", () => {
     const link = document.createElement("a");
     link.href = pngUrl;
     link.download = "barcode.png";
-      link.click();
+    link.click();
 })
 
 
