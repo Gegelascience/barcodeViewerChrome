@@ -45,9 +45,6 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 
 var ean =params.ean
 
-//const eanText = document.getElementById("eanValue")
-
-//eanText.innerText = ean
 
 const canvas = document.getElementById('myCanvas');
 if (canvas.getContext) {
@@ -78,15 +75,20 @@ if (canvas.getContext) {
     for (let index = 0; index < secondPart.length; index++) {
         ctx.fillText(secondPart[index], 40 + 25 + partLen*5*7 + index*35,350)
     }
-
-    
-    
     
 }
 
-function drawSubText(ctx, text, x, y) {
-    ctx.fillText(text, x,y)
-}
+var btn = document.getElementById("pngSave")
+btn.addEventListener("click", () => {
+  
+    const canvas = document.getElementById('myCanvas');
+    const pngUrl =canvas.toDataURL();
+    const link = document.createElement("a");
+    link.href = pngUrl;
+    link.download = "barcode.png";
+      link.click();
+})
+
 
 
 function drawLine(ctx, begin, end, stroke = 'black', width = 1) {
