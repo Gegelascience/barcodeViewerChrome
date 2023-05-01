@@ -78,8 +78,8 @@ if (canvas.getContext) {
     
 }
 
-var btn = document.getElementById("pngSave")
-btn.addEventListener("click", () => {
+var btnPng = document.getElementById("pngSave")
+btnPng.addEventListener("click", () => {
   
     const canvas = document.getElementById('myCanvas');
     const pngUrl =canvas.toDataURL();
@@ -88,6 +88,61 @@ btn.addEventListener("click", () => {
     link.download = "barcode.png";
     link.click();
 })
+
+var btnSvg = document.getElementById("svgSave")
+btnSvg.addEventListener("click", () => {
+  
+    const svgEl = generateSvgElement(ean)
+
+    var serializer = new XMLSerializer();
+    var source = serializer.serializeToString(svgEl);
+
+    if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+    }
+
+    source = '<?xml version="1.0" encoding="utf-8"?>\r\n' + source;
+
+    //convert svg source to URI data scheme.
+    var svgurl = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+
+    const link = document.createElement("a");
+    link.href = svgurl;
+    link.download = "barcode.svg";
+    link.click();
+})
+
+
+function generateSvgElement(ean) {
+    const barcodeValue = calculateBarCodeValue(ean)
+    const svgContainer = document.createElementNS("http://www.w3.org/2000/svg",'svg')
+    svgContainer.setAttribute("version","1.1")
+    svgContainer.setAttribute("baseProfile","full")
+    svgContainer.setAttribute("width","700")
+    svgContainer.setAttribute("height","200")
+    
+
+    const gContainer = document.createElementNS('http://www.w3.org/2000/svg','g');
+    gContainer.setAttribute("stroke","black")
+    let index = 10;
+    for (let indexB = 0; indexB < barcodeValue.length; indexB++) {
+        if (barcodeValue[indexB] == "1"){
+            const lineContainer = document.createElementNS('http://www.w3.org/2000/svg','line');
+            lineContainer.setAttribute("stroke-width",4)
+            lineContainer.setAttribute("y1",10)
+            lineContainer.setAttribute("x1",index)
+            lineContainer.setAttribute("y2",50)
+            lineContainer.setAttribute("x2",index)
+            gContainer.appendChild(lineContainer)
+        }
+        index = index + 4
+    };
+
+
+    svgContainer.appendChild(gContainer)
+
+    return svgContainer
+}
 
 
 
