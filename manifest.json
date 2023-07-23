@@ -6,6 +6,9 @@
     "permissions": [
       "tabs"
     ],
+    "background": {
+      "service_worker": "utils/checkEan.js"
+    },
     "action": {
       "default_popup":"popup.html",
       "16": "/images/get_started16.png",
